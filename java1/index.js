@@ -74,4 +74,38 @@ function game() {
 // const computerSelection = getComputerChoice();
 // console.log(playRound(playerSelection, computerSelection));
 
-game();
+const button = document.querySelector('button');
+const content = document.querySelector('body');
+// const player = document.querySelector('input');
+
+
+
+// const playButton = document.createElement('button');
+// playButton.textContent = 'Play';
+
+
+button.addEventListener('click', () => {
+    const playButton = document.createElement('button');
+    playButton.class = 'new';
+    playButton.textContent = 'Play';
+    const newButton = document.querySelector('.new');
+    newButton.addEventListener('click', () => {
+        let player = document.querySelector('input');
+        let msg = document.createElement('div');
+        msg.textContent = player.value;
+        content.appendChild(msg);
+        content.removeChild(playButton);
+    })
+
+    const choice = document.createElement('input');
+    choice.type = 'password';
+    choice.name = 'password';
+
+    content.appendChild(choice);
+    content.appendChild(playButton);
+    content.removeChild(button);
+})
+
+
+
+
