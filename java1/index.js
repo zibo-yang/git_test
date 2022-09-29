@@ -1,10 +1,13 @@
 function playRound(playerSelection, computerSelection) {
-    // your code here!
+
     let pairSelection = {
         firstSelection: playerSelection,
         secondSelection: computerSelection
     }
     let result;
+
+    //bad issue: JSON naturally convert double quote to single quote, which makes
+    //the pattern matching failure latter(wait to be solved latter)
     pairSelection = JSON.parse(JSON.stringify(pairSelection));
 
     //decide the result based on two decisions
@@ -46,64 +49,61 @@ function getComputerChoice() {
     }
 }
    
-function game() {
+function game(round, player) {
     let winTimes = 0;
     let result = "loss";
 
-    //test
-    // console.log('test:' + ({test:'r'} == {test: "r"}))
-    // let test1 = {test:'r'};
-    // let test2 = {test:"r"};
-    // let test11 = JSON.parse(JSON.stringify([test1]));
-
-    for (i = 0; i < 3; i++) {
-        let playerSelection = prompt("What's your sign?").toLocaleLowerCase();
+    for (i = 0; i < round; i++) {
+        let playerSelection = player.value.toLocaleLowerCase();
         let computerSelection = getComputerChoice();
         let roundResult = playRound(playerSelection, computerSelection);
         if (roundResult == "win") {
             winTimes++;
         }
     }
-    if (winTimes >= 2) {
+    if (winTimes * 2 >= round) {
         result = "win"
     }
-    alert("Finally we " + result);
-    console.log("Finally we " + result);
+    // alert("Finally we " + result);
+    // console.log("Finally we " + result);
+    return "Result: finally we " + result;
 }
-// const playerSelection = prompt("What's your sign?").toLocaleLowerCase();
-// const computerSelection = getComputerChoice();
-// console.log(playRound(playerSelection, computerSelection));
+
 
 const button = document.querySelector('button');
 const content = document.querySelector('body');
-// const player = document.querySelector('input');
-
-
-
-// const playButton = document.createElement('button');
-// playButton.textContent = 'Play';
-
 
 button.addEventListener('click', () => {
+    //create second button
     const playButton = document.createElement('button');
-    playButton.class = 'new';
+    playButton.className = 'new';
     playButton.textContent = 'Play';
-    const newButton = document.querySelector('.new');
-    newButton.addEventListener('click', () => {
-        let player = document.querySelector('input');
-        let msg = document.createElement('div');
-        msg.textContent = player.value;
-        content.appendChild(msg);
-        content.removeChild(playButton);
-    })
 
+    //create input box
     const choice = document.createElement('input');
     choice.type = 'password';
     choice.name = 'password';
 
+    //update webpage
     content.appendChild(choice);
     content.appendChild(playButton);
     content.removeChild(button);
+
+    //add eventlistener for second button 
+    const newButton = document.querySelector('.new');
+    newButton.addEventListener('click', () => {
+        //create div to show your result
+        const player = document.querySelector('input');
+        const msg = document.createElement('div');
+
+        //assign game result to msg
+        msg.textContent = game(1, player);
+        
+        //update webpage
+        content.appendChild(msg);
+        content.removeChild(playButton);
+        content.removeChild(player);
+    })
 })
 
 
